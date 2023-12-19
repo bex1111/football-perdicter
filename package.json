@@ -1,0 +1,26 @@
+{
+  "name": "football-predicter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "npx ts-node src/index.ts",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bex1111/football-perdicter.git"
+  },
+  "keywords": [
+    "football"
+  ],
+  "author": "Bexterlab",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bex1111/football-perdicter/issues"
+  },
+  "homepage": "https://github.com/bex1111/football-perdicter#readme",
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}
