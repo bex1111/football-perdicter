@@ -1,35 +1,35 @@
 import { InputType, PlayedInputType } from "./InputType";
 
 export class Input {
-  private _input2021and22: any[];
+  private _input: any[];
 
-  constructor(input2021and22: any[]) {
-    this._input2021and22 = input2021and22;
+  constructor(input: any[]) {
+    this._input = input;
   }
 
-  calculateLastPlayedRoundNumber(): number {
+  public calculateLastPlayedRoundNumber(): number {
     return Math.max.apply(
       null,
-      input2021and22.filter(this.isPlayed).map((x) => x.RoundNumber)
+      this._input.filter(this.isPlayed).map((x) => x.RoundNumber)
     );
   }
 
   private isPlayed(x: InputType): boolean {
-    return !!x.AwayTeamScore && !!x.HomeTeamScore;
+    return x.AwayTeamScore!==null && x.HomeTeamScore!==null;
   }
 
-  getPlayedRounds(currentRoundNumber: number): PlayedInputType[] {
-    return this._input2021and22
+  public getPlayedRounds(currentRoundNumber: number): PlayedInputType[] {
+    return this._input
       .filter(this.isPlayed)
-      .filter((x) => x.RoundNumber > currentRoundNumber);
+      .filter((x) => x.RoundNumber < currentRoundNumber);
   }
 
   countPlayedMatch(): number {
-    return this._input2021and22.filter(this.isPlayed).length;
+    return this._input.filter(this.isPlayed).length;
   }
 }
 
-export const input2021and22: any[] = [
+export const input2023and24: any[] = [
   {
     MatchNumber: 1,
     RoundNumber: 1,

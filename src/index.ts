@@ -1,9 +1,9 @@
 import { League } from "./entity/League";
-import { Input, input2021and22 } from "./data/Input";
+import { Input, input2023and24 } from "./data/Input";
 import { Output, output2021and22 } from "./data/Output";
 import { MatchPredict } from "./entity/MatchPredict";
 
-let input = new Input(input2021and22);
+let input = new Input(input2023and24);
 let output = new Output(output2021and22);
 let counter = 0;
 

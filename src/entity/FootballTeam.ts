@@ -11,26 +11,16 @@ export class FootballTeam {
     this._awayScores.push(score);
   }
 
+  get homeScores(): number[] {
+    return this._homeScores
+  }
+
+  get awayScores(): number[] {
+    return this._awayScores
+  }
+
   get name() {
     return this._name;
-  }
-
-  get getPredictedHomeScore() {
-    return this.calculatePredictedScore(this._homeScores);
-  }
-
-  private calculatePredictedScore(scores: number[]) {
-    let sum = 0;
-    let divider = 0;
-    for (let i = 0; i < scores.length; i++) {
-      divider += i;
-      sum += scores[i] * i;
-    }
-    return Math.round(sum / divider);
-  }
-
-  get getPredictedAwayScore() {
-    return this.calculatePredictedScore(this._awayScores);
   }
 
   constructor(name: string, initScoreHome: number, initScoreAway: number) {

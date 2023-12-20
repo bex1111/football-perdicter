@@ -13,8 +13,27 @@ export class MatchPredict {
   isMatch(homeScore: number, awayScore: number): boolean {
     return (
       homeScore + awayScore ===
-      this._homeTeam.getPredictedHomeScore +
-        this._awayTeam.getPredictedAwayScore
+      this.getPredictedHomeScore +
+        this.getPredictedAwayScore
     );
   }
+
+  get getPredictedHomeScore() {
+    return this.calculatePredictedScore(this._homeTeam.homeScores);
+  }
+
+  get getPredictedAwayScore() {
+    return this.calculatePredictedScore(this._awayTeam.awayScores);
+  }
+
+  public calculatePredictedScore(scores: number[]) {
+    let sum = 0;
+    let divider = 0;
+    for (let i = 0; i < scores.length; i++) {
+      divider += i;
+      sum += scores[i] * i;
+    }
+    return Math.round(sum / divider);
+  }
+
 }
