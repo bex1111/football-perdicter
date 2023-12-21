@@ -3,27 +3,29 @@ import {Input} from './Input'
 
 describe('input', function () {
 
-    let input: any[] = []
+    let inputArray: any[] = []
+    let input:Input;
     beforeEach(function () {
-        input = [{HomeTeamScore: 0, AwayTeamScore: 3, RoundNumber: 5},
+        inputArray = [{HomeTeamScore: 0, AwayTeamScore: 3, RoundNumber: 5},
             {HomeTeamScore: 1, AwayTeamScore: 2, RoundNumber: 1},
             {HomeTeamScore:5, AwayTeamScore:0 , RoundNumber: 2},
             {HomeTeamScore: null, AwayTeamScore: null, RoundNumber: 7}]
+        input=new Input(inputArray);
     })
 
-    it('count empty input', function () {
+    it('count empty inputArray', function () {
         expect(0).equals(new Input([]).countPlayedMatch())
     })
-    it('count played input', function () {
-        expect(3).equals(new Input(input)
+    it('count played inputArray', function () {
+        expect(3).equals(input
             .countPlayedMatch())
     })
     it('calculate last played round number', function () {
-        expect(5).equals(new Input(input)
+        expect(5).equals(input
             .calculateLastPlayedRoundNumber())
     })
     it('get played rounds', function () {
-        assert.deepEqual([input[1],input[2]],
-            new Input(input).getPlayedRounds(2))
+        assert.deepEqual([inputArray[1],inputArray[2]],
+            input.getPlayedRounds(2))
     })
 })

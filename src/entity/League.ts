@@ -15,7 +15,7 @@ export class League {
   public addHomeInput(teamName: string, score: number) {
     let footballTeam = this._teams.find((x) => x.name === teamName);
     if (footballTeam) {
-      footballTeam.getPredictedHomeScore = score;
+      footballTeam.addPredictedHomeScore = score;
     } else {
       this._teams.push(new FootballTeam(teamName, score, 0));
     }
@@ -24,7 +24,7 @@ export class League {
   public addAwayInput(teamName: string, score: number) {
     let footballTeam = this._teams.find((x) => x.name === teamName);
     if (footballTeam) {
-      footballTeam.getPredictedAwayScore = score;
+      footballTeam.addPredictedAwayScore = score;
     } else {
       this._teams.push(new FootballTeam(teamName, score, 0));
     }

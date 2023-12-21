@@ -3,11 +3,11 @@ export class FootballTeam {
   private _homeScores: number[];
   private _awayScores: number[];
 
-  public set getPredictedHomeScore(score: number) {
+  public set addPredictedHomeScore(score: number) {
     this._homeScores.push(score);
   }
 
-  public set getPredictedAwayScore(score: number) {
+  public set addPredictedAwayScore(score: number) {
     this._awayScores.push(score);
   }
 
