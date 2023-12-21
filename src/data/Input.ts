@@ -21,7 +21,7 @@ export class Input {
   public getPlayedRounds(currentRoundNumber: number): PlayedInputType[] {
     return this._input
       .filter(this.isPlayed)
-      .filter((x) => x.RoundNumber < currentRoundNumber);
+      .filter((x) => x.RoundNumber <= currentRoundNumber);
   }
 
   countPlayedMatch(): number {
