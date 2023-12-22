@@ -1,7 +1,7 @@
 export class FootballTeam {
-  private _name: string;
-  private _homeScores: number[];
-  private _awayScores: number[];
+  private readonly _name: string;
+  private readonly _homeScores: number[];
+  private readonly _awayScores: number[];
 
   public set addPredictedHomeScore(score: number) {
     this._homeScores.push(score);
@@ -23,9 +23,9 @@ export class FootballTeam {
     return this._name;
   }
 
-  constructor(name: string, initScoreHome: number, initScoreAway: number) {
+  constructor(name: string) {
     this._name = name;
-    this._homeScores = [initScoreHome];
-    this._awayScores = [initScoreAway];
+    this._homeScores = [];
+    this._awayScores = [];
   }
 }

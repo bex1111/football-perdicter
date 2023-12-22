@@ -1,31 +1,23 @@
 import {League} from './entity/League'
 import {Input, input2023and24} from './data/Input'
-import {Output, output2021and22} from './data/Output'
-import {MatchPredict} from './entity/MatchPredict'
+import {WeightedAveragePredictor} from './logic/WeightedAveragePredictor'
+import {Prediction} from './logic/Predicition'
+import {PredictionView} from './view/PredictionView'
 
 let input = new Input(input2023and24)
-let output = new Output(output2021and22)
-let counter = 0
+let prediction: Prediction[] = []
 
 for (let i = 1; i < input.calculateLastPlayedRoundNumber(); i++) {
-    let league = new League()
-    input.getPlayedRounds(i).forEach((x) => {
-        league.addAwayInput(x.AwayTeam, x.AwayTeamScore)
-        league.addHomeInput(x.HomeTeam, x.HomeTeamScore)
-    })
+    let league = new League(input.getPlayedRounds(i))
 
-    counter += output
-        .getRound(i+1)
-        .filter((x) =>
-            new MatchPredict(x.AwayTeam, x.HomeTeam, league).isMatch(
-                x.HomeTeamScore,
-                x.AwayTeamScore,
-            ),
-        ).length
+    prediction = prediction.concat(input
+        .getRound(i + 1)
+        .map(x =>
+            new Prediction(x,
+                new WeightedAveragePredictor(
+                    league.getFootballTeam(x.AwayTeam),
+                    league.getFootballTeam(x.HomeTeam)))))
+
 }
 
-let succesrateInPercent = (counter / input.countPlayedMatch()) * 100
-
-console.log(
-    `All match:${input.countPlayedMatch()} succes rate: ${succesrateInPercent}`,
-)
+new PredictionView(prediction).generate()

@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "start": "npx ts-node src/index.ts",
-    "test": "mocha -r ts-node/register src/**/*.test.ts",
+    "test": "mocha --timeout 60000 -r ts-node/register src/**/*.test.ts",
     "coverage": "nyc -r lcov -e .ts -x \"*.test.ts\" npm run test"
   },
   "repository": {

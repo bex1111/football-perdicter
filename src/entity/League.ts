@@ -1,40 +1,48 @@
-import { TeamNotFoundExceptions } from "../exception/TeamNotFoundException";
-import { FootballTeam } from "./FootballTeam";
+import {TeamNotFoundExceptions} from '../exception/TeamNotFoundException'
+import {FootballTeam} from './FootballTeam'
+import {PlayedInputType} from '../type/InputType'
 
 export class League {
-  private _teams: FootballTeam[];
+    private readonly _teams: FootballTeam[]
 
-  constructor() {
-    this._teams = [];
-  }
-
-  public get teams() {
-    return this._teams;
-  }
-
-  public addHomeInput(teamName: string, score: number) {
-    let footballTeam = this._teams.find((x) => x.name === teamName);
-    if (footballTeam) {
-      footballTeam.addPredictedHomeScore = score;
-    } else {
-      this._teams.push(new FootballTeam(teamName, score, 0));
+    constructor(playedRound: PlayedInputType[]) {
+        this._teams = this.findTeamByName(playedRound)
+        playedRound.forEach(x => this.addHomeInput(x))
+        playedRound.forEach(x => this.addAwayInput(x))
     }
-  }
 
-  public addAwayInput(teamName: string, score: number) {
-    let footballTeam = this._teams.find((x) => x.name === teamName);
-    if (footballTeam) {
-      footballTeam.addPredictedAwayScore = score;
-    } else {
-      this._teams.push(new FootballTeam(teamName, score, 0));
+    private findTeamByName(playedRound: PlayedInputType[]): FootballTeam[] {
+        let teamsName = playedRound.map(x => x.HomeTeam)
+        teamsName = teamsName.concat(playedRound.map(x => x.AwayTeam))
+        return Array.from(
+            new Set(teamsName)
+                .values())
+            .map(x => new FootballTeam(x))
     }
-  }
 
-  getFootballTeam(name: string): FootballTeam {
-    let team = this._teams.find((x) => x.name);
-    if (team) {
-      return team;
+    public get teams() {
+        return this._teams
     }
-    throw new TeamNotFoundExceptions(name);
-  }
+
+    private addHomeInput(playedMatch: PlayedInputType) {
+        let footballTeam = this._teams.find((x) => x.name === playedMatch.HomeTeam)
+        if (footballTeam) {
+            footballTeam.addPredictedHomeScore = playedMatch.HomeTeamScore
+        }
+    }
+
+    private addAwayInput(playedMatch: PlayedInputType) {
+        let footballTeam = this._teams.find((x) => x.name === playedMatch.AwayTeam)
+        if (footballTeam) {
+            footballTeam.addPredictedAwayScore = playedMatch.AwayTeamScore
+        }
+    }
+
+    getFootballTeam(name: string): FootballTeam {
+        let team = this._teams.find((x) => x.name===name)
+        if (team) {
+            return team
+        }
+        throw new TeamNotFoundExceptions(name)
+    }
 }

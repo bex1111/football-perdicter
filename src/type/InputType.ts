@@ -1,4 +1,4 @@
-export interface InputType {
+export type InputType = {
   MatchNumber: number;
   RoundNumber: number;
   DateUtc: string;
@@ -10,7 +10,7 @@ export interface InputType {
   AwayTeamScore: number | null;
 }
 
-export interface PlayedInputType {
+export type PlayedInputType = {
   MatchNumber: number;
   RoundNumber: number;
   DateUtc: string;

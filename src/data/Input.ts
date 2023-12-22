@@ -1,4 +1,4 @@
-import { InputType, PlayedInputType } from "./InputType";
+import { InputType, PlayedInputType } from "../type/InputType";
 
 export class Input {
   private _input: any[];
@@ -26,6 +26,10 @@ export class Input {
 
   countPlayedMatch(): number {
     return this._input.filter(this.isPlayed).length;
+  }
+
+  public getRound(roundNumber: number): InputType[] {
+    return this._input.filter((x) => x.RoundNumber === roundNumber)
   }
 }
 
