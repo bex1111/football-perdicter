@@ -1,5 +1,5 @@
 import {Prediction} from '../logic/Predicition'
-import {writeFile} from '../gateway/FileWriter'
+import {writeFile} from '../gateway/file/FileWriter'
 
 export class PredictionView {
     private readonly _predictions: Prediction[]
@@ -9,7 +9,7 @@ export class PredictionView {
     }
 
     public generate() {
-        writeFile('dist/index.html',
+        writeFile('dist/prediction.html',
             this.generateFullHtml(this.generateBody()))
     }
 
@@ -30,20 +30,20 @@ export class PredictionView {
     }
 
     private generateMatchReault(x: Prediction) {
-        return `<th>${x.inputType.HomeTeamScore}-${x.inputType.AwayTeamScore}</th>`
+        return `<th>${x.playedMatch.HomeTeamScore}-${x.playedMatch.AwayTeamScore}</th>`
     }
 
     private generateTeamColumn(x: Prediction) {
-        return `<th>${x.inputType.HomeTeam}-${x.inputType.AwayTeam}</th>`
+        return `<th>${x.playedMatch.HomeTeam}-${x.playedMatch.AwayTeam}</th>`
     }
 
     private generateRound(x: Prediction) {
-        return `<th>${x.inputType.RoundNumber}</th>`
+        return `<th>${x.playedMatch.RoundNumber}</th>`
     }
 
 
     private generateFullHtml(body: string): string {
-      return  `<!DOCTYPE html>
+        return `<!DOCTYPE html>
          <html lang="en">
          <head>
            <meta charset="UTF-8">

@@ -5,16 +5,16 @@ import {PredictionType} from '../type/PredictionType'
 
 export class Prediction {
 
-    private readonly _inputType: InputType
+    private readonly _playedMatch: InputType
     private readonly _predictors: Predictor[]
 
-    constructor(playedInputType: InputType, ...predictors: Predictor[]) {
-        this._inputType = playedInputType
+    constructor(playedMatch: InputType, ...predictors: Predictor[]) {
+        this._playedMatch = playedMatch
         this._predictors = predictors
     }
 
-    get inputType(): InputType {
-        return this._inputType
+    get playedMatch(): InputType {
+        return this._playedMatch
     }
 
     get predictions(): PredictionResultType[] {
@@ -29,7 +29,7 @@ export class Prediction {
     }
 
     private isMatch(prediction: PredictionType) {
-        return (this.inputType.HomeTeamScore || -1) + (this.inputType.AwayTeamScore || -1) ===
+        return (this.playedMatch.HomeTeamScore || -1) + (this.playedMatch.AwayTeamScore || -1) ===
             prediction.homeScore + prediction.awayScore
     }
 }

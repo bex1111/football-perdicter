@@ -2,7 +2,7 @@ import {FootballTeam} from '../entity/FootballTeam'
 import {Predictor} from './Predictor'
 import {PredictionType} from '../type/PredictionType'
 
-export class WeightedAveragePredictor implements Predictor {
+export class AveragePredictor implements Predictor {
     private _homeTeam: FootballTeam
     private _awayTeam: FootballTeam
 
@@ -28,13 +28,9 @@ export class WeightedAveragePredictor implements Predictor {
     }
 
     private calculatePredictedScore(scores: number[]) {
-        let sum = 0
-        let divider = 0
-        for (let i = 0; i < scores.length; i++) {
-            divider += i
-            sum += scores[i] * i
-        }
-        return Math.round(sum / divider)
+        return Math.round(
+            scores.reduce((x, y) => x + y, 0) /
+            scores.length)
     }
 
 }
