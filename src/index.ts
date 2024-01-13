@@ -5,6 +5,7 @@ import {Prediction} from './logic/Predicition'
 import {PredictionView} from './view/PredictionView'
 import {AveragePredictor} from './logic/AveragePredictor'
 import {MainPageView} from './view/MainPageView'
+import {Statistic} from './logic/Statistic'
 
 let input = new Input(input2023and24)
 let prediction: Prediction[] = []
@@ -29,6 +30,8 @@ for (let i = 5; i < input.calculateLastPlayedRoundNumber(); i++) {
     )
 
 }
+let statistic = new Statistic(prediction.map(x => x.predictions))
 
+new PredictionView(prediction).generate()
 new PredictionView(prediction).generate()
 new MainPageView().generate()

@@ -8,14 +8,14 @@ export class MainPageView {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic HTML Loading</title>
+    <title>Football predictor</title>
 </head>
 <body>
 
     <h2>Click the button to load content from other HTML files</h2>
 
-    <button onclick="loadContent('prediction.html')">Load Page 1</button>
-    <button onclick="loadContent('prediction.html')">Load Page 2</button>
+    <button onclick="loadContent('prediction.html')">Load Prediction Page</button>
+    <button onclick="loadContent('statistic.html')">Load Statistic Page</button>
 
     <div id="content-container">
         <!-- Content will be loaded here -->
