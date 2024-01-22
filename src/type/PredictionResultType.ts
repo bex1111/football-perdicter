@@ -1,6 +1,5 @@
 import {PredictionType} from './PredictionType'
 
-export type PredictionResultType =PredictionType &{
-    isMatch:boolean,
-
+export type PredictionResultType = PredictionType & {
+    isMatch: boolean,
 }

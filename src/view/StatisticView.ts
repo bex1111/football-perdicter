@@ -1,10 +1,10 @@
 import {writeFile} from '../gateway/file/FileWriter'
 import {StatisticType} from '../type/StatisticType'
 
-export class PredictionView {
-    private readonly _statistic: StatisticType
+export class StatisticView {
+    private readonly _statistic: StatisticType[]
 
-    constructor(statistic: StatisticType) {
+    constructor(statistic: StatisticType[]) {
         this._statistic = statistic
     }
 
@@ -14,17 +14,23 @@ export class PredictionView {
     }
 
     private generateBody() {
-        let tableBody: string = ''
-        for (let statisticKey in this._statistic) {
-            tableBody += '<tr>' + this.generateData(statisticKey, this._statistic[statisticKey]) + '</tr>'
-        }
+        let tableBody: string = this.generateHeader() +
+            this._statistic.map(x => '<tr>' + this.generateData(x) + '</tr>')
         return '<table>' + tableBody + '</table>'
     }
 
-    private generateData(statisticKey: string, statisticElement: { percentage: number; matchCounter: number }) {
-        return `<th>${statisticKey}</th>
-                <th>${statisticElement.percentage}</th>
-                <th>${statisticElement.matchCounter}</th>`
+    private generateData(statistic: StatisticType) {
+        return `<th>${statistic.algorithmName}</th>
+                <th>${statistic.percentage * 100} %</th>
+                <th>${statistic.successCounter}</th>
+                <th>${statistic.counter}</th>`
+    }
+
+    private generateHeader() {
+        return `<th>Name</th>
+                <th>Succesrate</th>
+                <th>Succes counter</th>
+                <th>Counter</th>`
     }
 
 

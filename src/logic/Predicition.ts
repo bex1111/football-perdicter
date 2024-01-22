@@ -1,4 +1,4 @@
-import {Predictor} from './Predictor'
+import {Predictor} from './predicor/Predictor'
 import {InputType} from '../type/InputType'
 import {PredictionResultType} from '../type/PredictionResultType'
 import {PredictionType} from '../type/PredictionType'
