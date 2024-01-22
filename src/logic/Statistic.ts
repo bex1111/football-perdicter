@@ -31,7 +31,7 @@ export class Statistic {
 
     private calculatePercentage(predictionResult: PredictionResultType[]) {
         for (let statisticKey in this._statistic) {
-            let statisticElement = this._statistic.find(x => x.algorithmName = statisticKey)
+            let statisticElement = this._statistic.find(x => x.algorithmName === statisticKey)
             if (statisticElement) {
                 statisticElement.percentage = statisticElement.successCounter / predictionResult.length
             }
