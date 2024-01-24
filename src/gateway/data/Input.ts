@@ -1,9 +1,11 @@
 import {InputType, PlayedInputType} from '../../type/InputType'
+import * as https from 'https'
 
 export class Input {
     private _input: any[]
 
     constructor(input: any[]) {
+        // let data = this.downloadData()
         this._input = input
     }
 
@@ -26,6 +28,21 @@ export class Input {
 
     public getRound(roundNumber: number): InputType[] {
         return this._input.filter((x) => x.RoundNumber === roundNumber)
+    }
+
+    //TODO finish it with arg
+    private downloadData(): string {
+        let data = ''
+
+        const request = https.get('https://fixturedownload.com/feed/json/epl-2023', function (response) {
+            response
+                .on('data', append => data += append)
+                .on('error', e => console.error(e))
+                .on('end', () => console.log(data))
+
+        })
+        console.log(data)
+        return data
     }
 
     private isPlayed(x: InputType): boolean {

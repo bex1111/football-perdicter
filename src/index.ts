@@ -7,11 +7,13 @@ import {AveragePredictor} from './logic/predicor/AveragePredictor'
 import {MainPageView} from './view/MainPageView'
 import {Statistic} from './logic/Statistic'
 import {StatisticView} from './view/StatisticView'
+import {FixPredictor} from './logic/predicor/FixPredictor'
+import {RandomForestPredictor} from './logic/predicor/RandomForestPredictor'
 
 let input = new Input(input2023and24)
 let prediction: Prediction[] = []
 
-for (let i = 5; i < input.calculateLastPlayedRoundNumber(); i++) {
+for (let i = 10; i < input.calculateLastPlayedRoundNumber(); i++) {
     let league = new League(input.getPlayedRounds(i))
 
     prediction = prediction.concat(input
@@ -26,6 +28,12 @@ for (let i = 5; i < input.calculateLastPlayedRoundNumber(); i++) {
                     league.getFootballTeam(x.AwayTeam),
                     league.getFootballTeam(x.HomeTeam),
                 ),
+                new RandomForestPredictor(
+                    league.getFootballTeam(x.AwayTeam),
+                    league.getFootballTeam(x.HomeTeam),
+                    league.teams,
+                ),
+                new FixPredictor(),
             ),
         ),
     )

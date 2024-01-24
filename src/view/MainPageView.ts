@@ -12,7 +12,11 @@ export class MainPageView {
 </head>
 <body>
 
-    <h2>Click the button to load content from other HTML files</h2>
+    <h2>Creation date:  <span id="date"></span></h2>
+
+    <script>
+        document.getElementById('date').innerHTML = new Date().toLocaleString()
+    </script>
 
     <button onclick="loadContent('prediction.html')">Load Prediction Page</button>
     <button onclick="loadContent('statistic.html')">Load Statistic Page</button>
@@ -23,14 +27,14 @@ export class MainPageView {
 
     <script>
         function loadContent(page) {
-            var xhttp = new XMLHttpRequest();
+            var xhttp = new XMLHttpRequest()
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
-                    document.getElementById("content-container").innerHTML = this.responseText;
+                    document.getElementById('content-container').innerHTML = this.responseText
                 }
-            };
-            xhttp.open("GET", page, true);
-            xhttp.send();
+            }
+            xhttp.open('GET', page, true)
+            xhttp.send()
         }
     </script>
 

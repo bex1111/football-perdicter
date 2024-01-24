@@ -29,7 +29,9 @@ export class Prediction {
     }
 
     private isMatch(prediction: PredictionType) {
-        return (this.playedMatch.HomeTeamScore || -1) + (this.playedMatch.AwayTeamScore || -1) ===
+        return [this.playedMatch.HomeTeamScore, this.playedMatch.AwayTeamScore]
+                .filter((x): x is number => x !== null)
+                .reduce((x, y) => x + y, 0) ===
             prediction.homeScore + prediction.awayScore
     }
 }
