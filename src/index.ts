@@ -9,9 +9,16 @@ import {Statistic} from './logic/Statistic'
 import {StatisticView} from './view/StatisticView'
 import {FixPredictor} from './logic/predicor/FixPredictor'
 import {RandomForestPredictor} from './logic/predicor/RandomForestPredictor'
+import {RandomForestBaseOptions, RandomForestRegression} from 'ml-random-forest'
 
 let input = new Input(input2023and24)
 let prediction: Prediction[] = []
+const options: Partial<RandomForestBaseOptions> = {
+    seed: 2,
+    maxFeatures: 4,
+    replacement: false,
+    nEstimators: 100,
+}
 
 for (let i = 10; i < input.calculateLastPlayedRoundNumber(); i++) {
     let league = new League(input.getPlayedRounds(i))
@@ -32,6 +39,7 @@ for (let i = 10; i < input.calculateLastPlayedRoundNumber(); i++) {
                     league.getFootballTeam(x.AwayTeam),
                     league.getFootballTeam(x.HomeTeam),
                     league.teams,
+                    new RandomForestRegression(options),
                 ),
                 new FixPredictor(),
             ),

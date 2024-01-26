@@ -1,25 +1,21 @@
 import {FootballTeam} from '../../entity/FootballTeam'
 import {Predictor} from './Predictor'
 import {PredictionType} from '../../type/PredictionType'
-import {RandomForestBaseOptions, RandomForestRegression} from 'ml-random-forest'
+import {RandomForestRegression} from 'ml-random-forest'
 
 export class RandomForestPredictor implements Predictor {
 
-    private readonly options: Partial<RandomForestBaseOptions> = {
-        seed: 30,
-        maxFeatures: 0.70,
-        replacement: true,
-        nEstimators: 500,
-        selectionMethod: 'median',
-    }
+    private readonly numberOfRoundHistory = 4
     private readonly _homeTeam: FootballTeam
     private readonly _awayTeam: FootballTeam
     private readonly _footBallTeams: FootballTeam[]
+    private readonly _randomForestRegression: RandomForestRegression
 
-    constructor(_homeTeam: FootballTeam, _awayTeam: FootballTeam, _footBallTeams: FootballTeam[]) {
+    constructor(_homeTeam: FootballTeam, _awayTeam: FootballTeam, _footBallTeams: FootballTeam[], randomForestRegression: RandomForestRegression) {
         this._homeTeam = _homeTeam
         this._awayTeam = _awayTeam
         this._footBallTeams = _footBallTeams
+        this._randomForestRegression = randomForestRegression
     }
 
     private get getPredictedHomeScore() {
@@ -27,7 +23,7 @@ export class RandomForestPredictor implements Predictor {
     }
 
     private get getPredictedAwayScore() {
-        return this.calculatePredictedScore(this._footBallTeams.map(x => x.awayScores), this._homeTeam.awayScores)
+        return this.calculatePredictedScore(this._footBallTeams.map(x => x.awayScores), this._awayTeam.awayScores)
     }
 
     getPrediction(): PredictionType {
@@ -39,24 +35,39 @@ export class RandomForestPredictor implements Predictor {
     }
 
     private calculatePredictedScore(scores: number[][], currentTeamScore: number[]) {
-        let scoreArrayLength = scores.length
-        let numberOfRoundHistory = 4
-        let trainingSet: number[][] = []
-        let predictions: number[] = []
-        for (let i = 0; i < scores.length; i++) {
-            let currentTeamTrainingSet: number[][] = []
-            let currentTeamPrediction: number[] = []
-            for (let j = 0; j < scores[i].length - numberOfRoundHistory; j++) {
-                currentTeamTrainingSet[j] = scores[i].slice(j, j + numberOfRoundHistory)
-                currentTeamPrediction[j] = scores[i][j + numberOfRoundHistory]
-            }
-            trainingSet = trainingSet.concat(currentTeamTrainingSet)
-            predictions = predictions.concat(currentTeamPrediction)
-        }
+        let trainingSet: number[][] = this.generateTrainingSet(scores)
+        let trainingResults: number[] = this.generateResultSet(scores)
+        let predictionSet = this.generatePredictionSet(currentTeamScore, this.numberOfRoundHistory)
 
-        let regression = new RandomForestRegression(this.options)
-        regression.train(trainingSet, predictions)
-        return Math.round(regression.predict([currentTeamScore.slice(currentTeamScore.length - numberOfRoundHistory, scoreArrayLength - 1)])[0])
+        this._randomForestRegression.train(trainingSet, trainingResults)
+        return Math.round(this._randomForestRegression.predict(predictionSet)[0])
     }
 
+    private generateTrainingSet(scores: number[][]) {
+        let trainingSet: number[][] = []
+        for (let i = 0; i < scores.length; i++) {
+            let currentTeamTrainingSet: number[][] = []
+            for (let j = 0; j < scores[i].length - this.numberOfRoundHistory; j++) {
+                currentTeamTrainingSet[j] = scores[i].slice(j, j + this.numberOfRoundHistory)
+            }
+            trainingSet = trainingSet.concat(currentTeamTrainingSet)
+        }
+        return trainingSet
+    }
+
+    private generateResultSet(scores: number[][]) {
+        let trainingResults: number[] = []
+        for (let i = 0; i < scores.length; i++) {
+            let currentTeamTrainingResult: number[] = []
+            for (let j = 0; j < scores[i].length - this.numberOfRoundHistory; j++) {
+                currentTeamTrainingResult[j] = scores[i][j + this.numberOfRoundHistory]
+            }
+            trainingResults = trainingResults.concat(currentTeamTrainingResult)
+        }
+        return trainingResults
+    }
+
+    private generatePredictionSet(currentTeamScore: number[], numberOfRoundHistory: number) {
+        return [currentTeamScore.slice(currentTeamScore.length - numberOfRoundHistory, currentTeamScore.length)]
+    }
 }
