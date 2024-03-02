@@ -1,49 +1,58 @@
-import {Prediction} from '../logic/Predicition'
-import {writeFile} from '../gateway/file/FileWriter'
+import { Prediction } from "../logic/Predicition";
+import { writeFile } from "../gateway/file/FileWriter";
 
 export class PredictionView {
-    private readonly _predictions: Prediction[]
+  private readonly _predictions: Prediction[];
 
-    constructor(predictions: Prediction[]) {
-        this._predictions = predictions
-    }
+  constructor(predictions: Prediction[]) {
+    this._predictions = predictions;
+  }
 
-    public generate() {
-        writeFile('dist/prediction.html',
-            this.generateFullHtml(this.generateBody()))
-    }
+  public generate() {
+    writeFile("prediction.html", this.generateFullHtml(this.generateBody()));
+  }
 
-    private generateBody() {
-        return '<table>' + this._predictions.map(x =>
-            '<tr>' +
+  private generateBody() {
+    return (
+      "<table>" +
+      this._predictions
+        .map(
+          (x) =>
+            "<tr>" +
             this.generateRound(x) +
             this.generateTeamColumn(x) +
             this.generateMatchReault(x) +
             this.generatePredictions(x) +
-            '</tr>')
-            .join('\n') + '</table>'
-    }
+            "</tr>"
+        )
+        .join("\n") +
+      "</table>"
+    );
+  }
 
-    private generatePredictions(x: Prediction) {
-        return x.predictions
-            .map(z => `<th>${z.algorithm}</th><th>${z.isMatch}</th><th>${z.homeScore}-${z.awayScore}</th>`)
-    }
+  private generatePredictions(x: Prediction) {
+    return x.predictions
+      .map(
+        (z) =>
+          `<th>${z.algorithm}</th><th>${z.isMatch}</th><th>${z.homeScore}-${z.awayScore}</th>`
+      )
+      .join("");
+  }
 
-    private generateMatchReault(x: Prediction) {
-        return `<th>${x.playedMatch.HomeTeamScore}-${x.playedMatch.AwayTeamScore}</th>`
-    }
+  private generateMatchReault(x: Prediction) {
+    return `<th>${x.playedMatch.HomeTeamScore}-${x.playedMatch.AwayTeamScore}</th>`;
+  }
 
-    private generateTeamColumn(x: Prediction) {
-        return `<th>${x.playedMatch.HomeTeam}-${x.playedMatch.AwayTeam}</th>`
-    }
+  private generateTeamColumn(x: Prediction) {
+    return `<th>${x.playedMatch.HomeTeam}-${x.playedMatch.AwayTeam}</th>`;
+  }
 
-    private generateRound(x: Prediction) {
-        return `<th>${x.playedMatch.RoundNumber}</th>`
-    }
+  private generateRound(x: Prediction) {
+    return `<th>${x.playedMatch.RoundNumber}</th>`;
+  }
 
-
-    private generateFullHtml(body: string): string {
-        return `<!DOCTYPE html>
+  private generateFullHtml(body: string): string {
+    return `<!DOCTYPE html>
          <html lang="en">
          <head>
            <meta charset="UTF-8">
@@ -67,6 +76,6 @@ export class PredictionView {
          <body>
          ${body}
          </body>
-         </html>`
-    }
+         </html>`;
+  }
 }

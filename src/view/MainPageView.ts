@@ -1,9 +1,8 @@
-import {writeFile} from '../gateway/file/FileWriter'
+import { writeFile } from "../gateway/file/FileWriter";
 
 export class MainPageView {
-
-    generate() {
-        const page: string = `<!DOCTYPE html>
+  generate() {
+    const page: string = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -12,14 +11,14 @@ export class MainPageView {
 </head>
 <body>
 
-    <h2>Creation date:  <span id="date"></span></h2>
+    <h2>Create at:  <span id="date"></span></h2>
 
     <script>
         document.getElementById('date').innerHTML = new Date().toLocaleString()
     </script>
 
-    <button onclick="loadContent('prediction.html')">Load Prediction Page</button>
     <button onclick="loadContent('statistic.html')">Load Statistic Page</button>
+    <button onclick="loadContent('prediction.html')">Load Prediction Page</button>
 
     <div id="content-container">
         <!-- Content will be loaded here -->
@@ -36,14 +35,11 @@ export class MainPageView {
             xhttp.open('GET', page, true)
             xhttp.send()
         }
+        loadContent('statistic.html')
     </script>
 
 </body>
-</html>`
-        writeFile('dist/index.html',
-            page)
-
-    }
-
-
+</html>`;
+    writeFile("index.html", page);
+  }
 }

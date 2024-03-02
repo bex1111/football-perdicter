@@ -32,6 +32,7 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
+    "@types/node": "^20.11.24",
     "ml-random-forest": "^2.1.0"
   }
 }

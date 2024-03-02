@@ -1,41 +1,42 @@
-import {writeFile} from '../gateway/file/FileWriter'
-import {StatisticType} from '../type/StatisticType'
+import { writeFile } from "../gateway/file/FileWriter";
+import { StatisticType } from "../type/StatisticType";
 
 export class StatisticView {
-    private readonly _statistic: StatisticType[]
+  private readonly _statistic: StatisticType[];
 
-    constructor(statistic: StatisticType[]) {
-        this._statistic = statistic
-    }
+  constructor(statistic: StatisticType[]) {
+    this._statistic = statistic;
+  }
 
-    public generate() {
-        writeFile('dist/statistic.html',
-            this.generateFullHtml(this.generateBody()))
-    }
+  public generate() {
+    writeFile("statistic.html", this.generateFullHtml(this.generateBody()));
+  }
 
-    private generateBody() {
-        let tableBody: string = this.generateHeader() +
-            this._statistic.map(x => '<tr>' + this.generateData(x) + '</tr>')
-        return '<table>' + tableBody + '</table>'
-    }
+  private generateBody() {
+    let tableBody: string =
+      this.generateHeader() +
+      this._statistic
+        .map((x) => "<tr>" + this.generateData(x) + "</tr>")
+        .join("");
+    return "<table>" + tableBody + "</table>";
+  }
 
-    private generateData(statistic: StatisticType) {
-        return `<th>${statistic.algorithmName}</th>
+  private generateData(statistic: StatisticType) {
+    return `<th>${statistic.algorithmName}</th>
                 <th>${statistic.percentage * 100} %</th>
                 <th>${statistic.successCounter}</th>
-                <th>${statistic.counter}</th>`
-    }
+                <th>${statistic.counter}</th>`;
+  }
 
-    private generateHeader() {
-        return `<th>Name</th>
+  private generateHeader() {
+    return `<th>Name</th>
                 <th>Succesrate</th>
                 <th>Succes counter</th>
-                <th>Counter</th>`
-    }
+                <th>Counter</th>`;
+  }
 
-
-    private generateFullHtml(body: string): string {
-        return `<!DOCTYPE html>
+  private generateFullHtml(body: string): string {
+    return `<!DOCTYPE html>
          <html lang="en">
          <head>
            <meta charset="UTF-8">
@@ -59,6 +60,6 @@ export class StatisticView {
          <body>
          ${body}
          </body>
-         </html>`
-    }
+         </html>`;
+  }
 }
