@@ -3,9 +3,9 @@ import * as path from "path";
 
 const folderName = "dist";
 
-export function writeFile(fileNamename: string, data: string) {
+export function writeFile(fileName: string, data: string) {
   createFolderIfNotExist();
-  writeDataToFile(fileNamename, data);
+  writeDataToFile(fileName, data);
 }
 
 function writeDataToFile(name: string, data: string) {
@@ -25,4 +25,8 @@ function createFolderIfNotExist() {
   if (!fs.existsSync(folderName)) {
     fs.mkdirSync(folderName);
   }
+}
+
+export function readFile(fileName: string): string {
+  return fs.readFileSync(path.join(folderName, fileName), { encoding: "utf8" });
 }

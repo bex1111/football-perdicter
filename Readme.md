@@ -8,3 +8,7 @@
 
 - `make install`
 - `make start`
+
+# .env file
+
+- `API_KEY` https://apifootball.com api key.

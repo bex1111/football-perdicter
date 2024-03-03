@@ -1,4 +1,4 @@
-import { writeFile } from "../gateway/file/FileWriter";
+import { writeFile } from "../gateway/file/FileGateway";
 
 export class MainPageView {
   generate() {

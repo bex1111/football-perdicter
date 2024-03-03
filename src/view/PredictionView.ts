@@ -1,5 +1,5 @@
 import { Prediction } from "../logic/Predicition";
-import { writeFile } from "../gateway/file/FileWriter";
+import { writeFile } from "../gateway/file/FileGateway";
 
 export class PredictionView {
   private readonly _predictions: Prediction[];
