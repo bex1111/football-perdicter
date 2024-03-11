@@ -10,7 +10,7 @@ export function writeFile(fileName: string, data: string) {
 
 function writeDataToFile(name: string, data: string) {
   fs.writeFile(
-    path.resolve(process.cwd(), folderName + path.sep + name),
+    path.resolve(process.cwd(), generateFilePath(name)),
     data,
     function (err) {
       if (err) {
@@ -21,6 +21,10 @@ function writeDataToFile(name: string, data: string) {
   );
 }
 
+function generateFilePath(filenName: string) {
+  return folderName + path.sep + filenName;
+}
+
 function createFolderIfNotExist() {
   if (!fs.existsSync(folderName)) {
     fs.mkdirSync(folderName);
@@ -29,4 +33,8 @@ function createFolderIfNotExist() {
 
 export function readFile(fileName: string): string {
   return fs.readFileSync(path.join(folderName, fileName), { encoding: "utf8" });
+}
+
+export function isFileExist(fileName: string): boolean {
+  return fs.existsSync(generateFilePath(fileName));
 }

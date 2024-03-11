@@ -1,16 +1,30 @@
-import * as https from "https";
-import { writeFile, readFile } from "../file/FileGateway";
+import {get} from "https";
+import { writeFile, readFile, isFileExist } from "../file/FileGateway";
+import { DateGateway } from "../DateGateway";
 
 export class ApiFootballInput {
-  private _input: any;
+  private readonly _input: any;
+  private readonly _dateGateway: DateGateway;  
 
-  constructor() {
-    //this._input = this.downloadData();
-    this._input = JSON.parse(readFile("downloadedData.json"));
+  get input() {
+    return this._input;
+  }
+
+  constructor(dateGateway: DateGateway) {
+    this._dateGateway = dateGateway;
+    this._input = this.loadInput();
     console.log(this._input);
   }
 
-  private loadfromFile() {}
+  private loadInput() {
+    let data;
+    if (isFileExist(this.generateFileName())) {
+      data = readFile(this.generateFileName());
+    } else {
+      data = this.downloadData();
+    }
+    return JSON.parse(data);
+  }
 
   private downloadData(): any {
     let data = "";
@@ -18,24 +32,25 @@ export class ApiFootballInput {
     let endDate = this.formatDate(new Date("2024-05-20"));
     let premierLeagueId = 152;
 
-    //TODO await response
-    //TODO write test
-    //TODO finish file cache
-    const request = https.get(
+   get(
       `https://apiv3.apifootball.com/?action=get_events&
         from=${startDate}&
         to=${endDate}&
         league_id=${premierLeagueId}&   
         APIkey=${process.env.API_KEY}`,
-      function (response) {
+      (response) => {
         response
           .on("data", (append) => (data += append))
           .on("error", (e) => console.error(e))
-          .on("end", () => writeFile("downloadedData.json", data));
+          .on("end", () => writeFile(this.generateFileName(), data));
       }
-    );
+    );   
 
     return data;
+  }
+
+  private generateFileName() {
+    return `cached-data-${this.formatDate(this._dateGateway.now())}.json`;
   }
 
   private formatDate(date: Date): string {
