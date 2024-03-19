@@ -9,20 +9,11 @@ export function writeFile(fileName: string, data: string) {
 }
 
 function writeDataToFile(name: string, data: string) {
-  fs.writeFile(
-    path.resolve(process.cwd(), generateFilePath(name)),
-    data,
-    function (err) {
-      if (err) {
-        return console.log(err);
-      }
-      console.log("The file was saved!");
-    }
-  );
+  fs.writeFileSync(generateFilePath(name), data);
 }
 
 function generateFilePath(filenName: string) {
-  return folderName + path.sep + filenName;
+  return path.join(folderName, filenName);
 }
 
 function createFolderIfNotExist() {
@@ -32,9 +23,15 @@ function createFolderIfNotExist() {
 }
 
 export function readFile(fileName: string): string {
-  return fs.readFileSync(path.join(folderName, fileName), { encoding: "utf8" });
+  return fs.readFileSync(generateFilePath(fileName), { encoding: "utf8" });
 }
 
 export function isFileExist(fileName: string): boolean {
   return fs.existsSync(generateFilePath(fileName));
+}
+
+export function removeFile(fileName: string) {
+  if (isFileExist(fileName)) {
+    fs.unlinkSync(generateFilePath(fileName));
+  }
 }

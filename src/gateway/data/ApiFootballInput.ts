@@ -1,17 +1,30 @@
-import {get} from "https";
+import { RequestOptions } from "https";
 import { writeFile, readFile, isFileExist } from "../file/FileGateway";
 import { DateGateway } from "../DateGateway";
+import { ClientRequest, IncomingMessage } from "http";
+import { ApiFootballError} from "../../exception/ApiFootballError";
 
 export class ApiFootballInput {
   private readonly _input: any;
-  private readonly _dateGateway: DateGateway;  
+  private readonly _dateGateway: DateGateway;
+  private readonly _get: (
+    options: RequestOptions | string | URL,
+    callback?: (res: IncomingMessage) => void
+  ) => ClientRequest;
 
   get input() {
     return this._input;
   }
 
-  constructor(dateGateway: DateGateway) {
+  constructor(
+    dateGateway: DateGateway,
+    get: (
+      options: RequestOptions | string | URL,
+      callback?: (res: IncomingMessage) => void
+    ) => ClientRequest
+  ) {
     this._dateGateway = dateGateway;
+    this._get = get;
     this._input = this.loadInput();
     console.log(this._input);
   }
@@ -32,19 +45,21 @@ export class ApiFootballInput {
     let endDate = this.formatDate(new Date("2024-05-20"));
     let premierLeagueId = 152;
 
-   get(
-      `https://apiv3.apifootball.com/?action=get_events&
-        from=${startDate}&
-        to=${endDate}&
-        league_id=${premierLeagueId}&   
-        APIkey=${process.env.API_KEY}`,
+    this._get(
+      [
+        `https://apiv3.apifootball.com/?action=get_events&`,
+        `from=${startDate}&`,
+        `to=${endDate}&`,
+        `league_id=${premierLeagueId}&`,
+        `APIkey=${process.env.API_KEY}`,
+      ].join(""),
       (response) => {
         response
           .on("data", (append) => (data += append))
-          .on("error", (e) => console.error(e))
+          .on("error", (e) => {throw new ApiFootballError(e)})
           .on("end", () => writeFile(this.generateFileName(), data));
       }
-    );   
+    );
 
     return data;
   }
