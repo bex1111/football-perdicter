@@ -3,7 +3,7 @@ import {WeightedAveragePredictor} from './WeightedAveragePredictor'
 import {FootballTeam} from '../../entity/FootballTeam'
 import {instance, mock, when} from 'ts-mockito'
 
-describe('weightedAveragePredictor', function () {
+describe('weighted average predictor', function () {
 
     it('get prediction', function () {
         let homeFootballTeam = mock(FootballTeam)

@@ -5,7 +5,7 @@ import {RandomForestRegression} from 'ml-random-forest'
 import {expect} from 'chai'
 
 
-describe('RandomForestPredictor', function () {
+describe('random forest predictor', function () {
 
     it('get prediction', function () {
 

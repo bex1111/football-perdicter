@@ -2,24 +2,29 @@ import ApiFootballResult from "./ApiFootballResult";
 
 export class ApiFootballTeam {
   private readonly _name: string;
-  private lastPlayedRound: number;
+  private _lastPlayedRound: number;
+  
   private readonly _homeResults: ApiFootballResult[];
   private readonly _awayResults: ApiFootballResult[];
-
-  get homeResults(): ApiFootballResult[] {
+  
+  public get homeResults(): ApiFootballResult[] {
     return this._homeResults;
   }
-
-  get awayResults(): ApiFootballResult[] {
+  
+  public get awayResults(): ApiFootballResult[] {
     return this._awayResults;
   }
-
-  get name() {
+  
+  public get name() {
     return this._name;
+  }
+  
+  public get lastPlayedRound(): number {
+    return this._lastPlayedRound;
   }
 
   constructor(name: string) {
-    this.lastPlayedRound = 0;
+    this._lastPlayedRound = 0;
     this._name = name;
     this._homeResults = [];
     this._awayResults = [];
@@ -29,7 +34,7 @@ export class ApiFootballTeam {
     result: ApiFootballResult,
     roundNumber: number
   ) {
-    this.lastPlayedRound = roundNumber;
+    this._lastPlayedRound = this.calculateLastPlayedRound(roundNumber);
     this._homeResults.push(result);
   }
 
@@ -37,7 +42,13 @@ export class ApiFootballTeam {
     result: ApiFootballResult,
     roundNumber: number
   ) {
-    this.lastPlayedRound = roundNumber;
+    this._lastPlayedRound = this.calculateLastPlayedRound(roundNumber);
     this._awayResults.push(result);
+  }
+
+  private calculateLastPlayedRound(roundNumber: number): number {
+    return this._lastPlayedRound < roundNumber
+      ? roundNumber
+      : this._lastPlayedRound;
   }
 }

@@ -1,7 +1,7 @@
 import {expect} from 'chai'
 import {FixPredictor} from './FixPredictor'
 
-describe('FixPredictor', function () {
+describe('fix predictor', function () {
 
     it('get prediction', function () {
         let fixPredictor = new FixPredictor()
