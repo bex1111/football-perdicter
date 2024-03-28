@@ -38,7 +38,7 @@ export class League {
         }
     }
 
-    getFootballTeam(name: string): FootballTeam {
+    public getFootballTeam(name: string): FootballTeam {
         let team = this._teams.find((x) => x.name===name)
         if (team) {
             return team

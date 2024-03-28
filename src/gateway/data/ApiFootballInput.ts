@@ -3,9 +3,10 @@ import { writeFile, readFile, isFileExist } from "../file/FileGateway";
 import { DateGateway } from "../DateGateway";
 import { ClientRequest, IncomingMessage } from "http";
 import { ApiFootballError} from "../../exception/ApiFootballError";
+import { ApiFootballInputType } from "../../type/ApiFootballInputType";
 
 export class ApiFootballInput {
-  private readonly _input: any;
+  private readonly _input: ApiFootballInputType;
   private readonly _dateGateway: DateGateway;
   private readonly _get: (
     options: RequestOptions | string | URL,
@@ -42,7 +43,7 @@ export class ApiFootballInput {
   private downloadData(): any {
     let data = "";
     let startDate = this.formatDate(new Date("2023-08-11"));
-    let endDate = this.formatDate(new Date("2024-05-20"));
+    let endDate = this.formatDate(this._dateGateway.now());
     let premierLeagueId = 152;
 
     this._get(

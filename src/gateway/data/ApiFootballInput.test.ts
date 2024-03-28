@@ -7,7 +7,7 @@ import { IncomingMessage } from "http";
 import { Socket } from "net";
 import { ApiFootballError } from "../../exception/ApiFootballError";
 
-describe("apiFootballInput", function () {
+describe("api football input", function () {
   const TEST_CACHED_FILE_NAME = "cached-data-2022-10-05.json";
 
   let dataGateway: DateGateway = mock<DateGateway>();
@@ -35,16 +35,16 @@ describe("apiFootballInput", function () {
       mockGetData
     );
 
-    expect(url).equal(
-      "https://apiv3.apifootball.com/?action=get_events&from=2023-08-11&to=2024-05-20&league_id=152&APIkey=undefined"
-    );
+    expect(
+      "https://apiv3.apifootball.com/?action=get_events&from=2023-08-11&to=2022-10-05&league_id=152&APIkey=undefined"
+    ).equal(url);
     expect(apiFootballInput.input).deep.equal(["api"]);
     expect(isFileExist(TEST_CACHED_FILE_NAME)).true;
   });
 
   it("call api and log error", function () {
     expect(
-     ()=> new ApiFootballInput(instance(dataGateway), mockGetError)
+      () => new ApiFootballInput(instance(dataGateway), mockGetError)
     ).to.throw("Test error");
   });
 

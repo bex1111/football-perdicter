@@ -2,7 +2,7 @@ import {League} from './League'
 import {assert, expect} from 'chai'
 import {TeamNotFoundExceptions} from '../exception/TeamNotFoundException'
 
-describe('football', function () {
+describe('league', function () {
 
     const playedRound: any[] =
         [{

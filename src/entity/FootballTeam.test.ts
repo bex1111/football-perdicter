@@ -1,7 +1,7 @@
 import {assert, expect} from 'chai'
 import {FootballTeam} from './FootballTeam'
 
-describe('footballTeam', function () {
+describe('football team', function () {
 
     const name = 'testTeam'
     const initHomeScore = 0
