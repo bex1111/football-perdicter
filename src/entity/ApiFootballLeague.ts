@@ -1,45 +1,44 @@
 import {TeamNotFoundExceptions} from '../exception/TeamNotFoundException'
 import {FootballTeam} from './FootballTeam'
 import {PlayedInputType} from '../type/InputType'
+import { ApiFootballInputType } from '../type/ApiFootballInputType'
+import ApiFootballResult from './ApiFootballResult'
+import { StatisticType } from '../type/StatisticType'
+import { ApiFootballStatisticType } from '../type/ApiFootballStatisticType'
+import { StatisticNotFoundError } from '../exception/StatisticNotFoundError'
+import { ApiFootballTeam } from './ApiFootballTeam'
 
 export class League {
-    private readonly _teams: FootballTeam[]
-    private readonly 
+    private readonly _teams: ApiFootballTeam[]
+   
 
-    constructor(playedRound: PlayedInputType[]) {
-        this._teams = this.findTeamByName(playedRound)
-        playedRound.forEach(x => this.addHomeInput(x))
-        playedRound.forEach(x => this.addAwayInput(x))
-    }
-
-    private findTeamByName(playedRound: PlayedInputType[]): FootballTeam[] {
-        let teamsName = playedRound.map(x => x.HomeTeam)
-        teamsName = teamsName.concat(playedRound.map(x => x.AwayTeam))
-        return Array.from(
-            new Set(teamsName)
-                .values())
-            .map(x => new FootballTeam(x))
+    constructor(playedRounds: ApiFootballInputType[]) {
+        this._teams=[]
+        playedRounds.forEach(x => this.addHomeInput(x))
+        playedRounds.forEach(x => this.addAwayInput(x))
     }
 
     public get teams() {
         return this._teams
     }
 
-    private addHomeInput(playedMatch: PlayedInputType) {
-        let footballTeam = this._teams.find((x) => x.name === playedMatch.HomeTeam)
+    private addHomeInput(playedMatch: ApiFootballInputType) {
+        let footballTeam = this._teams.find((x) => x.name === playedMatch.match_hometeam_name)
+        if (!footballTeam) {
+            footballTeam=new ApiFootballTeam(playedMatch.match_hometeam_name);
+            this._teams.push(footballTeam)
+        }
+        footballTeam.addPredictedHomeResult(ApiFootballResult.generateHomeResult(playedMatch),playedMatch.match_round)
+    }
+
+    private addAwayInput(playedMatch: ApiFootballInputType) {
+        let footballTeam = this._teams.find((x) => x.name === playedMatch.match_awayteam_name)
         if (footballTeam) {
-            footballTeam.addPredictedHomeScore = playedMatch.HomeTeamScore
+            footballTeam.addPredictedAwayResult(ApiFootballResult.generateAwayResult(playedMatch),playedMatch.match_round)
         }
     }
 
-    private addAwayInput(playedMatch: PlayedInputType) {
-        let footballTeam = this._teams.find((x) => x.name === playedMatch.AwayTeam)
-        if (footballTeam) {
-            footballTeam.addPredictedAwayScore = playedMatch.AwayTeamScore
-        }
-    }
-
-    public getFootballTeam(name: string): FootballTeam {
+    public getFootballTeam(name: string): ApiFootballTeam {
         let team = this._teams.find((x) => x.name===name)
         if (team) {
             return team
@@ -47,3 +46,5 @@ export class League {
         throw new TeamNotFoundExceptions(name)
     }
 }
+
+
