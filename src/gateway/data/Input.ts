@@ -1,6 +1,9 @@
 import {InputType, PlayedInputType} from '../../type/InputType'
 import * as https from 'https'
 
+/**
+ * @deprecated
+ */
 export class Input {
     private _input: any[]
 

@@ -2,6 +2,9 @@ import {TeamNotFoundExceptions} from '../exception/TeamNotFoundException'
 import {FootballTeam} from './FootballTeam'
 import {PlayedInputType} from '../type/InputType'
 
+/**
+ * @deprecated
+ */
 export class League {
     private readonly _teams: FootballTeam[]
 

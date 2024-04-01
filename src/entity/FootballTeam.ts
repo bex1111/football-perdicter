@@ -1,3 +1,7 @@
+/**
+ * @deprecated
+ */
+
 export class FootballTeam {
   private readonly _name: string;
   private readonly _homeScores: number[];
