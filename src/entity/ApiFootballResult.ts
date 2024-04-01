@@ -1,3 +1,4 @@
+import NotParsedStatisticException from "../exception/NotParsedStatisticException";
 import { ApiFootballInputType } from "../type/ApiFootballInputType";
 import { ApiFootballStatisticType } from "../type/ApiFootballStatisticType";
 
@@ -20,42 +21,56 @@ export default class ApiFootballResult {
   private readonly passesTotal: number;
   private readonly passesAccurate: number;
 
-  constructor(
-    matchId: number,
-    matchTeamScore: number,
-    matchTeamHalftimeScore: number,
-    shotsTotal: number,
-    shotsOnGoal: number,
-    shotsOffGoal: number,
-    shotsBlocked: number,
-    shotsInsideBox: number,
-    shotsOutsideBox: number,
-    fouls: number,
-    corners: number,
-    offsides: number,
-    ballPossession: number,
-    redCards: number,
-    saves: number,
-    passesTotal: number,
-    passesAccurate: number
-  ) {
-    this.matchId = matchId;
-    this.matchTeamScore = matchTeamScore;
-    this.matchTeamHalftimeScore = matchTeamHalftimeScore;
-    this.shotsTotal = shotsTotal;
-    this.shotsOnGoal = shotsOnGoal;
-    this.shotsOffGoal = shotsOffGoal;
-    this.shotsBlocked = shotsBlocked;
-    this.shotsInsideBox = shotsInsideBox;
-    this.shotsOutsideBox = shotsOutsideBox;
-    this.fouls = fouls;
-    this.corners = corners;
-    this.offsides = offsides;
-    this.ballPossession = ballPossession;
-    this.redCards = redCards;
-    this.saves = saves;
-    this.passesTotal = passesTotal;
-    this.passesAccurate = passesAccurate;
+  private readonly firstHalfShotsTotal: number;
+  private readonly firstHalfShotsOnGoal: number;
+  private readonly firstHalfShotsOffGoal: number;
+  private readonly firstHalfShotsBlocked: number;
+  private readonly firstHalfShotsInsideBox: number;
+  private readonly firstHalfShotsOutsideBox: number;
+  private readonly firstHalfFouls: number;
+  private readonly firstHalfCorners: number;
+  private readonly firstHalfOffsides: number;
+  private readonly firstHalfBallPossession: number;
+  private readonly firstHalfRedCards: number;
+  private readonly firstHalfSaves: number;
+  private readonly firstHalfPassesTotal: number;
+  private readonly firstHalfPassesAccurate: number;
+
+  private constructor(statistics: number[]) {
+    let index = -1;
+    this.matchId = statistics[++index];
+    this.matchTeamScore = statistics[++index];
+    this.matchTeamHalftimeScore = statistics[++index];
+
+    this.shotsTotal = statistics[++index];
+    this.shotsOnGoal = statistics[++index];
+    this.shotsOffGoal = statistics[++index];
+    this.shotsBlocked = statistics[++index];
+    this.shotsInsideBox = statistics[++index];
+    this.shotsOutsideBox = statistics[++index];
+    this.fouls = statistics[++index];
+    this.corners = statistics[++index];
+    this.offsides = statistics[++index];
+    this.ballPossession = statistics[++index];
+    this.redCards = statistics[++index];
+    this.saves = statistics[++index];
+    this.passesTotal = statistics[++index];
+    this.passesAccurate = statistics[++index];
+
+    this.firstHalfShotsTotal = statistics[++index];
+    this.firstHalfShotsOnGoal = statistics[++index];
+    this.firstHalfShotsOffGoal = statistics[++index];
+    this.firstHalfShotsBlocked = statistics[++index];
+    this.firstHalfShotsInsideBox = statistics[++index];
+    this.firstHalfShotsOutsideBox = statistics[++index];
+    this.firstHalfFouls = statistics[++index];
+    this.firstHalfCorners = statistics[++index];
+    this.firstHalfOffsides = statistics[++index];
+    this.firstHalfBallPossession = statistics[++index];
+    this.firstHalfRedCards = statistics[++index];
+    this.firstHalfSaves = statistics[++index];
+    this.firstHalfPassesTotal = statistics[++index];
+    this.firstHalfPassesAccurate = statistics[++index];
   }
 
   public genearateTrainingSet(): number[] {
@@ -63,6 +78,7 @@ export default class ApiFootballResult {
       this.matchId,
       this.matchTeamScore,
       this.matchTeamHalftimeScore,
+
       this.shotsTotal,
       this.shotsOnGoal,
       this.shotsOffGoal,
@@ -77,197 +93,112 @@ export default class ApiFootballResult {
       this.saves,
       this.passesTotal,
       this.passesAccurate,
+
+      this.firstHalfShotsTotal,
+      this.firstHalfShotsOnGoal,
+      this.firstHalfShotsOffGoal,
+      this.firstHalfShotsBlocked,
+      this.firstHalfShotsInsideBox,
+      this.firstHalfShotsOutsideBox,
+      this.firstHalfFouls,
+      this.firstHalfCorners,
+      this.firstHalfOffsides,
+      this.firstHalfBallPossession,
+      this.firstHalfRedCards,
+      this.firstHalfSaves,
+      this.firstHalfPassesTotal,
+      this.firstHalfPassesAccurate,
     ];
   }
 
   public static generateHomeResult(
     apiFootballInputType: ApiFootballInputType
   ): ApiFootballResult {
-
-    return new ApiFootballResult(
-      apiFootballInputType.match_id,
-      apiFootballInputType.match_hometeam_score,
-      apiFootballInputType.match_hometeam_halftime_score,
-      this.findNumberInStatistic(
-        apiFootballInputType.statistics,
-        "Shots Total",
-        this.findHomeScore
-      ),
-      this.findNumberInStatistic(
-        apiFootballInputType.statistics,
-        "Shots On Goal",
-        this.findHomeScore
-      ),
-      this.findNumberInStatistic(
-        apiFootballInputType.statistics,
-        "Shots Off Goal",
-        this.findHomeScore
-      ),
-      this.findNumberInStatistic(
-        apiFootballInputType.statistics,
-        "Shots Blocked",
-        this.findHomeScore
-      ),
-      this.findNumberInStatistic(
-        apiFootballInputType.statistics,
-        "Shots Inside Box",
-        this.findHomeScore
-      ),
-      this.findNumberInStatistic(
-        apiFootballInputType.statistics,
-        "Shots Outside Box",
-        this.findHomeScore
-      ),
-      this.findNumberInStatistic(
-        apiFootballInputType.statistics,
-        "Fouls",
-        this.findHomeScore
-      ),
-      this.findNumberInStatistic(
-        apiFootballInputType.statistics,
-        "Corners",
-        this.findHomeScore
-      ),
-      this.findNumberInStatistic(
-        apiFootballInputType.statistics,
-        "Offsides",
-        this.findHomeScore
-      ),
-      this.findNumberInStatistic(
-        apiFootballInputType.statistics,
-        "Ball Possession",
-        this.findHomeScore,
-        this.removePercentage
-      ),
-      this.findNumberInStatistic(
-        apiFootballInputType.statistics,
-        "Yellow Cards",
-        this.findHomeScore
-      ),
-      this.findNumberInStatistic(
-        apiFootballInputType.statistics,
-        "Saves",
-        this.findHomeScore
-      ),
-      this.findNumberInStatistic(
-        apiFootballInputType.statistics,
-        "Passes Total",
-        this.findHomeScore
-      ),
-      this.findNumberInStatistic(
-        apiFootballInputType.statistics,
-        "Passes Accurate",
-        this.findHomeScore
-      )
+    let homeStatisticMap = new Map<string, number>(
+      apiFootballInputType.statistics.map((i) => [i.type, this.convert(i.home)])
     );
+    let homeFirstHalfStatisticMap = new Map<string, number>(
+      apiFootballInputType.statistics_1half.map((i) => [
+        i.type,
+        this.convert(i.home),
+      ])
+    );
+    return new ApiFootballResult([
+      Number(apiFootballInputType.match_id),
+      Number(apiFootballInputType.match_hometeam_score),
+      Number(apiFootballInputType.match_hometeam_halftime_score),
+      ...this.mapStatisticToArray(homeStatisticMap),
+      ...this.mapStatisticToArray(homeFirstHalfStatisticMap),
+    ]);
+  }
+
+  private static mapStatisticToArray(
+    statisticsMap: Map<string, number>
+  ): number[] {
+    let keyMap = [
+      "Shots Total",
+      "Shots On Goal",
+      "Shots Off Goal",
+      "Shots Blocked",
+      "Shots Inside Box",
+      "Shots Outside Box",
+      "Fouls",
+      "Corners",
+      "Offsides",
+      "Ball Possession",
+      "Yellow Cards",
+      "Red Cards",
+      "Saves",
+      "Passes Total",
+      "Passes Accurate",
+    ];
+    let difference = this.calculateDifference(
+      Array.from(statisticsMap.keys()),
+      keyMap
+    );
+    if (difference.length != 0) {
+      throw new NotParsedStatisticException(difference.join(","));
+    }
+    return keyMap.map((x) => this.getValueOrDefault(statisticsMap, x));
+  }
+
+  private static getValueOrDefault(
+    homeStatisticMap: Map<string, number>,
+    key: string
+  ): number {
+    return homeStatisticMap.get(key) || 0;
   }
 
   public static generateAwayResult(
     apiFootballInputType: ApiFootballInputType
   ): ApiFootballResult {
-
-    return new ApiFootballResult(
-      apiFootballInputType.match_id,
-      apiFootballInputType.match_awayteam_score,
-      apiFootballInputType.match_awayteam_halftime_score,
-      this.findNumberInStatistic(
-        apiFootballInputType.statistics,
-        "Shots Total",
-        this.findAwayScore
-      ),
-      this.findNumberInStatistic(
-        apiFootballInputType.statistics,
-        "Shots On Goal",
-        this.findAwayScore
-      ),
-      this.findNumberInStatistic(
-        apiFootballInputType.statistics,
-        "Shots Off Goal",
-        this.findAwayScore
-      ),
-      this.findNumberInStatistic(
-        apiFootballInputType.statistics,
-        "Shots Blocked",
-        this.findAwayScore
-      ),
-      this.findNumberInStatistic(
-        apiFootballInputType.statistics,
-        "Shots Inside Box",
-        this.findAwayScore
-      ),
-      this.findNumberInStatistic(
-        apiFootballInputType.statistics,
-        "Shots Outside Box",
-        this.findAwayScore
-      ),
-      this.findNumberInStatistic(
-        apiFootballInputType.statistics,
-        "Fouls",
-        this.findAwayScore
-      ),
-      this.findNumberInStatistic(
-        apiFootballInputType.statistics,
-        "Corners",
-        this.findAwayScore
-      ),
-      this.findNumberInStatistic(
-        apiFootballInputType.statistics,
-        "Offsides",
-        this.findAwayScore
-      ),
-      this.findNumberInStatistic(
-        apiFootballInputType.statistics,
-        "Ball Possession",
-        this.findAwayScore,
-        this.removePercentage
-      ),
-      this.findNumberInStatistic(
-        apiFootballInputType.statistics,
-        "Yellow Cards",
-        this.findAwayScore
-      ),
-      this.findNumberInStatistic(
-        apiFootballInputType.statistics,
-        "Saves",
-        this.findAwayScore
-      ),
-      this.findNumberInStatistic(
-        apiFootballInputType.statistics,
-        "Passes Total",
-        this.findAwayScore
-      ),
-      this.findNumberInStatistic(
-        apiFootballInputType.statistics,
-        "Passes Accurate",
-        this.findAwayScore
-      )
+    let awayStatisticMap = new Map<string, number>(
+      apiFootballInputType.statistics.map((i) => [i.type, this.convert(i.away)])
     );
-  }
-
-  private static findHomeScore(x: ApiFootballStatisticType) :string {
-    return x.home;
-  }
-
-  private static findAwayScore(x: ApiFootballStatisticType) :string {
-    return x.away;
-  }
-
-  private static findNumberInStatistic(
-    statistics: ApiFootballStatisticType[],
-    statisticName: string,
-    findScore: (x: ApiFootballStatisticType) => string,
-    transformator: (x: string) => string = (x) => x
-  ): number {
-    let statistic = statistics.find(
-      (statistic) => statistic.type === statisticName
+    let awayFirstHalfStatisticMap = new Map<string, number>(
+      apiFootballInputType.statistics_1half.map((i) => [
+        i.type,
+        this.convert(i.away),
+      ])
     );
-    if (statistic) {
-      return Number(transformator(findScore(statistic)));
-    }
-    return 0;
+    return new ApiFootballResult([
+      Number(apiFootballInputType.match_id),
+      Number(apiFootballInputType.match_hometeam_score),
+      Number(apiFootballInputType.match_hometeam_halftime_score),
+      ...this.mapStatisticToArray(awayStatisticMap),
+      ...this.mapStatisticToArray(awayFirstHalfStatisticMap),
+    ]);
   }
 
   private static removePercentage(ballPossession: string): string {
     return ballPossession.replace("%", "");
+  }
+
+  private static convert(statisticString: string): number {
+    return Number(this.removePercentage(statisticString));
+  }
+
+  private static calculateDifference(array1: string[], array2: string[]) {
+    return array1.filter((x) => !array2.includes(x));
   }
 }
