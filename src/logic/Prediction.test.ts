@@ -1,21 +1,22 @@
 import {expect} from 'chai'
 import {Prediction} from './Predicition'
-import {InputType} from '../type/InputType'
 import {Predictor} from './predicor/Predictor'
 import {instance, mock, when} from 'ts-mockito'
+import ApiFootballMatch from "../entity/ApiFootballMatch";
 
 describe('Prediction', function () {
 
-    const input: InputType =
-        {AwayTeam: '', DateUtc: '', Group: null, HomeTeam: '', Location: '', MatchNumber: 0, HomeTeamScore: 1, AwayTeamScore: 2, RoundNumber: 5}
+    const input: ApiFootballMatch = new ApiFootballMatch('finished', 'home', '1', 'away', '2', '1');
+
 
     let predictor: Predictor = mock<Predictor>()
     let prediction: Prediction
     let score: number
 
-    beforeEach(function () {
+    beforeEach(() => {
         score = 1
     })
+
 
     it('check prediction when home score change ', function () {
         when(predictor.getPrediction()).thenCall(() => {

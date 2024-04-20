@@ -5,7 +5,7 @@ start:
 	npm run start
 
 test:
- 	npm run test
+	npm run test
 
 open:
 	open.bat

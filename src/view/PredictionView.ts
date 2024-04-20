@@ -1,58 +1,59 @@
-import { Prediction } from "../logic/Predicition";
-import { writeFile } from "../gateway/file/FileGateway";
+import {Prediction} from "../logic/Predicition";
+import {writeFile} from "../gateway/file/FileGateway";
+import ApiFootballMatch from "../entity/ApiFootballMatch";
 
 export class PredictionView {
-  private readonly _predictions: Prediction[];
+    private readonly _predictions: Prediction[];
 
-  constructor(predictions: Prediction[]) {
-    this._predictions = predictions;
-  }
+    constructor(predictions: Prediction[]) {
+        this._predictions = predictions;
+    }
 
-  public generate() {
-    writeFile("prediction.html", this.generateFullHtml(this.generateBody()));
-  }
+    public generate() {
+        writeFile("prediction.html", this.generateFullHtml(this.generateBody()));
+    }
 
-  private generateBody() {
-    return (
-      "<table>" +
-      this._predictions
-        .map(
-          (x) =>
-            "<tr>" +
-            this.generateRound(x) +
-            this.generateTeamColumn(x) +
-            this.generateMatchReault(x) +
-            this.generatePredictions(x) +
-            "</tr>"
-        )
-        .join("\n") +
-      "</table>"
-    );
-  }
+    private generateBody() {
+        return (
+            "<table>" +
+            this._predictions
+                .map(
+                    (x) =>
+                        "<tr>" +
+                        this.generateRound(x.apiFootballMatch) +
+                        this.generateTeamColumn(x.apiFootballMatch) +
+                        this.generateMatchResult(x.apiFootballMatch) +
+                        this.generatePredictions(x) +
+                        "</tr>"
+                )
+                .join("\n") +
+            "</table>"
+        );
+    }
 
-  private generatePredictions(x: Prediction) {
-    return x.predictions
-      .map(
-        (z) =>
-          `<th>${z.algorithm}</th><th>${z.isMatch}</th><th>${z.homeScore}-${z.awayScore}</th>`
-      )
-      .join("");
-  }
+    private generatePredictions(x: Prediction) {
+        return x.predictions
+            .map(
+                (z) =>
+                    `<th>${z.algorithm}</th><th>${z.isMatch}</th><th>${z.homeScore}-${z.awayScore}</th>`
+            )
+            .join("");
+    }
 
-  private generateMatchReault(x: Prediction) {
-    return `<th>${x.playedMatch.HomeTeamScore}-${x.playedMatch.AwayTeamScore}</th>`;
-  }
+    private generateMatchResult(x: ApiFootballMatch) {
+        return `<th>${x.homeTeamGoalNumber}-${x.awayTeamGoalNumber}</th>`;
+    }
 
-  private generateTeamColumn(x: Prediction) {
-    return `<th>${x.playedMatch.HomeTeam}-${x.playedMatch.AwayTeam}</th>`;
-  }
+    private generateTeamColumn(x: ApiFootballMatch) {
+        return `<th>${x.homeTeamName}-${x.awayTeamName}</th>`;
+    }
 
-  private generateRound(x: Prediction) {
-    return `<th>${x.playedMatch.RoundNumber}</th>`;
-  }
+    private generateRound(x: ApiFootballMatch) {
+        return `<th>${x.roundNumber}</th>`;
+    }
 
-  private generateFullHtml(body: string): string {
-    return `<!DOCTYPE html>
+    private generateFullHtml(body: string): string {
+        return `<!DOCTYPE html>
          <html lang="en">
          <head>
            <meta charset="UTF-8">
@@ -77,5 +78,5 @@ export class PredictionView {
          ${body}
          </body>
          </html>`;
-  }
+    }
 }
