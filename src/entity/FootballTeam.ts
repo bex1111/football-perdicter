@@ -2,7 +2,7 @@
  * @deprecated
  */
 
-export class FootballTeam {
+export default class FootballTeam {
   private readonly _name: string;
   private readonly _homeScores: number[];
   private readonly _awayScores: number[];

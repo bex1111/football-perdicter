@@ -2,19 +2,17 @@ import {Predictor} from './predicor/Predictor'
 import {InputType} from '../type/InputType'
 import {PredictionResultType} from '../type/PredictionResultType'
 import {PredictionType} from '../type/PredictionType'
+import ApiFootballMatch from '../entity/ApiFootballMatch'
 
 export class Prediction {
 
-    private readonly _playedMatch: InputType
+    
+    private readonly _apiFootballMatch: ApiFootballMatch;
     private readonly _predictionResult: PredictionResultType[]
 
-    constructor(playedMatch: InputType, ...predictors: Predictor[]) {
-        this._playedMatch = playedMatch
+    constructor(apiFootballMatch:ApiFootballMatch, ...predictors: Predictor[]) {
+        this._apiFootballMatch = apiFootballMatch;
         this._predictionResult = predictors.map(x => this.mapPredictionToResult(x))
-    }
-
-    get playedMatch(): InputType {
-        return this._playedMatch
     }
 
     get predictions(): PredictionResultType[] {
@@ -29,7 +27,7 @@ export class Prediction {
     }
 
     private isMatch(prediction: PredictionType) {
-        return [this.playedMatch.HomeTeamScore, this.playedMatch.AwayTeamScore]
+        return [this._apiFootballMatch, this.playedMatch.AwayTeamScore]
                 .filter((x): x is number => x !== null)
                 .reduce((x, y) => x + y, 0) ===
             prediction.homeScore + prediction.awayScore

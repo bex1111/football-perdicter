@@ -1,6 +1,6 @@
-import {League} from './League'
+import League from './League'
 import {assert, expect} from 'chai'
-import {TeamNotFoundExceptions} from '../exception/TeamNotFoundException'
+import TeamNotFoundExceptions from '../exception/TeamNotFoundException'
 
 describe('league', function () {
 

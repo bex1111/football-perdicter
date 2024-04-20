@@ -1,19 +1,20 @@
-import { FootballTeam } from "../../entity/FootballTeam";
+import  FootballTeam from "../../entity/FootballTeam";
 import { Predictor } from "./Predictor";
 import { PredictionType } from "../../type/PredictionType";
 import { RandomForestRegression } from "ml-random-forest";
+import ApiFootballTeam from "../../entity/ApiFootballTeam";
 
 export class RandomForestPredictor implements Predictor {
   private readonly numberOfRoundHistory = 4;
-  private readonly _homeTeam: FootballTeam;
-  private readonly _awayTeam: FootballTeam;
+  private readonly _homeTeam: ApiFootballTeam;
+  private readonly _awayTeam: ApiFootballTeam;
   private readonly _footBallTeams: FootballTeam[];
   private readonly _randomForestRegression: RandomForestRegression;
 
   constructor(
-    _homeTeam: FootballTeam,
-    _awayTeam: FootballTeam,
-    _footBallTeams: FootballTeam[],
+    _homeTeam: ApiFootballTeam,
+    _awayTeam: ApiFootballTeam,
+    _footBallTeams: ApiFootballTeam[],
     randomForestRegression: RandomForestRegression
   ) {
     this._homeTeam = _homeTeam;

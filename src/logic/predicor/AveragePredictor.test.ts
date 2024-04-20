@@ -1,5 +1,5 @@
 import {expect} from 'chai'
-import {FootballTeam} from '../../entity/FootballTeam'
+import FootballTeam from '../../entity/FootballTeam'
 import {instance, mock, when} from 'ts-mockito'
 import {AveragePredictor} from './AveragePredictor'
 

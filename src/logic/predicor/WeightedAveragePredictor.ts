@@ -1,4 +1,4 @@
-import {FootballTeam} from '../../entity/FootballTeam'
+import FootballTeam from '../../entity/FootballTeam'
 import {Predictor} from './Predictor'
 import {PredictionType} from '../../type/PredictionType'
 

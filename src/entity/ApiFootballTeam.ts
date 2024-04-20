@@ -1,24 +1,24 @@
 import ApiFootballResult from "./ApiFootballResult";
 
-export class ApiFootballTeam {
+export default class ApiFootballTeam {
   private readonly _name: string;
   private _lastPlayedRound: number;
-  
+
   private readonly _homeResults: ApiFootballResult[];
   private readonly _awayResults: ApiFootballResult[];
-  
+
   public get homeResults(): ApiFootballResult[] {
     return this._homeResults;
   }
-  
+
   public get awayResults(): ApiFootballResult[] {
     return this._awayResults;
   }
-  
+
   public get name() {
     return this._name;
   }
-  
+
   public get lastPlayedRound(): number {
     return this._lastPlayedRound;
   }
@@ -30,18 +30,12 @@ export class ApiFootballTeam {
     this._awayResults = [];
   }
 
-  public addPredictedHomeResult(
-    result: ApiFootballResult,
-    roundNumber: number
-  ) {
+  public addHomeResult(result: ApiFootballResult, roundNumber: number) {
     this._lastPlayedRound = this.calculateLastPlayedRound(roundNumber);
     this._homeResults.push(result);
   }
 
-  public addPredictedAwayResult(
-    result: ApiFootballResult,
-    roundNumber: number
-  ) {
+  public addAwayResult(result: ApiFootballResult, roundNumber: number) {
     this._lastPlayedRound = this.calculateLastPlayedRound(roundNumber);
     this._awayResults.push(result);
   }

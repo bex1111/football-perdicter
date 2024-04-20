@@ -1,6 +1,6 @@
 import {expect} from 'chai'
 import {WeightedAveragePredictor} from './WeightedAveragePredictor'
-import {FootballTeam} from '../../entity/FootballTeam'
+import FootballTeam from '../../entity/FootballTeam'
 import {instance, mock, when} from 'ts-mockito'
 
 describe('weighted average predictor', function () {

@@ -1,6 +1,6 @@
 import {RandomForestPredictor} from './RandomForestPredictor'
 import {deepEqual, instance, mock, verify, when} from 'ts-mockito'
-import {FootballTeam} from '../../entity/FootballTeam'
+import FootballTeam from '../../entity/FootballTeam'
 import {RandomForestRegression} from 'ml-random-forest'
 import {expect} from 'chai'
 

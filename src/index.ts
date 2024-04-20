@@ -1,9 +1,7 @@
 import { League } from "./entity/League";
 import { Input, input2023and24 } from "./gateway/data/Input";
-import { WeightedAveragePredictor } from "./logic/predicor/WeightedAveragePredictor";
 import { Prediction } from "./logic/Predicition";
 import { PredictionView } from "./view/PredictionView";
-import { AveragePredictor } from "./logic/predicor/AveragePredictor";
 import { MainPageView } from "./view/MainPageView";
 import { Statistic } from "./logic/Statistic";
 import { StatisticView } from "./view/StatisticView";
@@ -13,8 +11,12 @@ import {
   RandomForestBaseOptions,
   RandomForestRegression,
 } from "ml-random-forest";
+import { ApiFootballInput } from "./gateway/data/ApiFootballInput";
+import { DateGateway } from "./gateway/DateGateway";
+import { get } from "https";
+import ApiFootballLeague from "./entity/ApiFootballLeague";
 
-let input = new Input(input2023and24);
+let apiFootballInput = new ApiFootballInput(new DateGateway(),get);
 let prediction: Prediction[] = [];
 
 const options: Partial<RandomForestBaseOptions> = {
@@ -24,11 +26,11 @@ const options: Partial<RandomForestBaseOptions> = {
   nEstimators: 500,
 };
 
-for (let i = 10; i < input.calculateLastPlayedRoundNumber(); i++) {
-  let league = new League(input.getPlayedRounds(i));
+let apiFootballLeague=new ApiFootballLeague(apiFootballInput.input)
 
+for (let i = 10; i < apiFootballLeague.calculateLastPlayedRoundNumber(); i++) {
   prediction = prediction.concat(
-    input.getRound(i + 1).map(
+    apiFootballLeague.getRound(i + 1).map(
       (x) =>
         new Prediction(
           x,

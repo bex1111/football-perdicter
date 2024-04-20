@@ -1,8 +1,6 @@
-import { assert, expect } from "chai";
-import { FootballTeam } from "./FootballTeam";
+import { expect } from "chai";
 import ApiFootballResult from "./ApiFootballResult";
 import { ApiFootballInputType } from "../type/ApiFootballInputType";
-import { StatisticNotFoundError } from "../exception/StatisticNotFoundError";
 
 describe("api football result", function () {
   it("genearate home training set", function () {

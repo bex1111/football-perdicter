@@ -1,4 +1,4 @@
-export class TeamNotFoundExceptions extends Error {
+export default class TeamNotFoundExceptions extends Error {
   constructor(name: string) {
     super(name);
   }

@@ -1,5 +1,5 @@
 import {assert, expect} from 'chai'
-import {FootballTeam} from './FootballTeam'
+import FootballTeam from './FootballTeam'
 
 describe('football team', function () {
 

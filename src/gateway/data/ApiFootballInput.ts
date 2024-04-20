@@ -6,7 +6,7 @@ import { ApiFootballError} from "../../exception/ApiFootballError";
 import { ApiFootballInputType } from "../../type/ApiFootballInputType";
 
 export class ApiFootballInput {
-  private readonly _input: ApiFootballInputType;
+  private readonly _input: ApiFootballInputType[];
   private readonly _dateGateway: DateGateway;
   private readonly _get: (
     options: RequestOptions | string | URL,
